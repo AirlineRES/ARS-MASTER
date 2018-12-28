@@ -1,0 +1,81 @@
+  private static bool IsInputValid(Reservation reserv)
+        {
+            StringBuilder sb = new StringBuilder();
+            bool validBookingEntry = true;
+
+            //flight id length can be varied 
+
+
+            if(reserv.FlightId.Length < 5)
+            {
+                validBookingEntry = false;
+                sb.Append(Environment.NewLine + "Flight ID entered is Invalid");
+
+            }
+
+            if (reserv.DateofBooking != DateTime.Now)
+            {
+                validBookingEntry = false;
+                sb.Append(Environment.NewLine + "Date of booking can not be after today's date.");
+
+            }
+
+            if (reserv.JourneyDate <= DateTime.Now)
+            {
+                validBookingEntry = false;
+                sb.Append(Environment.NewLine + "Journey date can not be before than today's date.");
+
+            }
+
+            if (reserv.PassengerName == "[A-za-z ]")
+            {
+                validBookingEntry = false;
+                sb.Append(Environment.NewLine + "Customer name is not valid");
+            }
+
+            if (reserv.ContactNo.Length!=10)
+            {
+                validBookingEntry = false;
+                sb.Append(Environment.NewLine + "Please enter a Contact Number of 10 digits only.");
+               
+            }
+
+            if (reserv.ContactNo != "[0-9]{10}")
+            {
+                validBookingEntry = false;
+                sb.Append(Environment.NewLine + "Please enter a valid contact number");
+            }
+
+            string email = reserv.Email;
+            System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+            System.Text.RegularExpressions.Match match = regex.Match(email);
+
+            if (match.Success)
+            {
+                validBookingEntry = true;
+            }
+            else
+            {
+                validBookingEntry = false;
+                sb.Append(Environment.NewLine + "Email ID entered is not valid.");
+            }
+
+            if (reserv.NoofTickets<0||reserv.NoofTickets>6)
+            {
+                validBookingEntry = false;
+                sb.Append(Environment.NewLine + "Please enter a number from 1 to 6.");
+            }
+
+
+            if (reserv.Age < 0 || reserv.Age > 120)
+            {
+                validBookingEntry = false;
+                sb.Append(Environment.NewLine + "Please enter valid Age.");
+            }
+
+            if (validBookingEntry == false)
+                throw new AirlineException(sb.ToString());
+
+               return validBookingEntry;
+        }
+    }
